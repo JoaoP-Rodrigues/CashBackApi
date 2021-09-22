@@ -1,28 +1,7 @@
 from flask import Flask, request
 import json
-from dbusers import insertUser
-
-def cpfValidate(cpfNotValidate):
-
-    # take only numbers from cpf input
-    cpf = [int(char) for char in cpfNotValidate if char.isdigit()]
-
-    # verify if the CPF contain exactly 11 digits
-    if len(cpf) != 11:
-        return False
-
-    # test if the cpf contain a same number in 11 digits
-    # this will pass in validate
-    if cpf == cpf[::-1]:
-        return False
-
-    # verify the verifying digit
-    for i in range(9, 11):
-        value = sum((cpf[num] * ((i+1) - num) for num in range(0, i)))
-        digit = ((value * 10) % 11) % 10
-        if digit != cpf[i]:
-            return False
-    return True
+from db import *
+from validations import *
 
 app = Flask("CashBack")
 
@@ -35,11 +14,17 @@ def getCashBack():
         response = {}
         response["message"] = "CPF Inválido!"
         return response
+    list_cashback_prods = []
+    test_dict = {}
+    i = 0
+    for p in body["products"]:
+        percent = checkProds(p[i]["type"])
+        t = p[i]["type"]
+        list_cashback_prods.append(percent)
+        test_dict[t] = percent
+        i += 1
 
-    #customer_name = body["customer"]["name"]
-    #products = body["products"]
-
-    return
+    return test_dict
 
 '''@app.route("/register/user", methods=["POST"])
 def registerUser():
