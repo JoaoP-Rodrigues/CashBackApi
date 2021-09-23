@@ -49,9 +49,11 @@ def checkValues(totalSell, prods_values):
     else:
         return True
 
+
 def checkDate(date):
     today = datetime
     return today
+
 
 def getSums(prod_value):
     sumProds = {}
@@ -61,3 +63,14 @@ def getSums(prod_value):
         sumProds[prod] = temp_sum
 
     return sumProds
+
+
+def calculateCashbacks(dict_cashs, dict_sums):
+    total_cash = 0
+
+    for k, v in dict_sums.items():
+        convert_to_percent = dict_cashs[k] / 100
+        temp_cash = v * convert_to_percent
+        total_cash += temp_cash
+
+    return total_cash

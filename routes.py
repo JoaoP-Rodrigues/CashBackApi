@@ -14,11 +14,11 @@ def getCashBack():
         response = {"message": "CPF Inválido!"}
         return response
 
-    test_dict = {}
+    dict_percent_prods = {}
     for p in body["products"]:
         percent = checkProds(p["type"])
         t = p["type"]
-        test_dict[t] = percent
+        dict_percent_prods[t] = percent
 
     if not checkValues(body["total"], body["products"]):
         response = {"message": "O valor da compra não corresponde a soma dos valores dos produtos!"}
@@ -26,9 +26,11 @@ def getCashBack():
 
     #hoje = {"Hoje": checkDate(body["sold_at"])}
     list_total_prods = getSums(body["products"])
-    
 
-    return list_total_prods
+    total_cashback = calculateCashbacks(dict_percent_prods, list_total_prods)
+    dict_test = {"TOTAL DE CASHBACK": total_cashback}
+
+    return dict_test
 
 
 def createResponse(status, message, name_of_content=False, content=False):
