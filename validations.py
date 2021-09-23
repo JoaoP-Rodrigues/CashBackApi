@@ -60,8 +60,17 @@ def checkValues(totalSell, prods_values):
         return True
 
 
-def checkDate(date):
-    today = datetime
+def checkDate(date_purchase):
+    today = datetime.today()
+    today_cut = today.strftime("%Y-%m-%d %H:%M:%S")
+    date_pr = datetime.strptime(date_purchase, "%Y-%m-%d %H:%M:%S")
+    
+    today2 = today.strftime("%Y-%m-%d %H:%M:%S")
+    dt_t = datetime.strptime(today2, "%Y-%m-%d %H:%M:%S")
+    dt_p = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+    teste =  abs(dt_t - dt_p)
+    print(teste)
+    
     return today
 
 # simple function to get the sum values of all products in purchase
