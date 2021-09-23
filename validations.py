@@ -4,18 +4,21 @@ from datetime import datetime
 def cpfValidate(cpfNotValidate):
 
     # take only numbers from cpf input
-    cpf = [int(char) for char in cpfNotValidate if char.isdigit()]
+    try:
+        cpf = [int(char) for char in cpfNotValidate if char.isdigit()]
+    except:
+        return False
 
     # verify if the CPF contain exactly 11 digits
     if len(cpf) != 11:
         return False
 
     # test if the cpf contain a same number in 11 digits
-    # this will pass in validate
+    # this will pass in first validate
     if cpf == cpf[::-1]:
         return False
 
-    # verify the verifying digit
+    # check and validate the verifying digit
     for i in range(9, 11):
         value = sum((cpf[num] * ((i+1) - num) for num in range(0, i)))
         digit = ((value * 10) % 11) % 10
@@ -37,16 +40,19 @@ def checkProds(product):
 # this function will validate the total value from sell
 def checkValues(totalSell, prods_values):
     # take and convert the value from sell provided on input "json" to float format
-    totalSell = float(totalSell)
-    sumValues = 0.0
-    
-    # this for loop will take the quantity and value from all products
-    # so, it is increment this value in a sum
-    # next, compares sell's total and sum taked from values
-    for p in prods_values:
-        temp_sum = float(p["value"]) * p["qty"]
-        sumValues += float(temp_sum)
-        prod = p["type"]
+    try:
+        totalSell = float(totalSell)
+        sumValues = 0.0
+
+        # this for loop will take the quantity and value from all products
+        # so, it is increment this value in a sum
+        # next, compares sell's total and sum taked from values
+        for p in prods_values:
+            temp_sum = float(p["value"]) * p["qty"]
+            sumValues += float(temp_sum)
+            prod = p["type"]
+    except:
+        return False
 
     if sumValues != totalSell:
         return False
