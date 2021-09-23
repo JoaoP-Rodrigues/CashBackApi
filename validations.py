@@ -1,3 +1,6 @@
+from datetime import datetime
+
+# this function will validade the consumer CPF
 def cpfValidate(cpfNotValidate):
 
     # take only numbers from cpf input
@@ -20,11 +23,41 @@ def cpfValidate(cpfNotValidate):
             return False
     return True
 
+
 # this function will receive on input a product type
 # if the product exist in dict, will return the cashback percent, if not, return "0"
 def checkProds(product):
     list_products = {"A": 15, "B": 5, "C": 10, "D": 12, "E": 3}
-    if product in list_products.items():
-        return list_products[product]
-    else:
+    if product not in list_products:
         return 0
+    else:
+        return list_products[product]
+
+
+def checkValues(totalSell, prods_values):
+    totalSell = float(totalSell)
+    sumValues = 0.0
+    sumProds = {}
+    for p in prods_values:
+        temp_sum = float(p["value"]) * p["qty"]
+        sumValues += float(temp_sum)
+        prod = p["type"]
+        sumProds[prod] = temp_sum
+
+    if sumValues != totalSell:
+        return False
+    else:
+        return True
+
+def checkDate(date):
+    today = datetime
+    return today
+
+def getSums(prod_value):
+    sumProds = {}
+    for v in prod_value:
+        temp_sum = float(v["value"]) * v["qty"]
+        prod = v["type"]
+        sumProds[prod] = temp_sum
+
+    return sumProds
