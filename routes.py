@@ -1,5 +1,5 @@
 from flask import Flask, request
-import json
+from datetime import datetime
 from db import *
 from validations import *
 
@@ -31,15 +31,19 @@ def getCashBack():
     list_total_prods = getSums(body["products"])
 
     total_cashback = calculateCashbacks(dict_percent_prods, list_total_prods)
-    return_cashback = {
-        "createdAt": "2021-07-26T22:50:55.740Z",
+    today = datetime.today()
+    req_cashback = {
+        "createdAt": today,
         "message": "Cashback criado com sucesso!",
-        "id": "NaN",
-        "document": "33535353535",
-        "cashback": "10"
+        "document": body["customer"]["document"],
+        "cashback": total_cashback
     }
 
-    return return_cashback
+    if not insertCashBack(req_cashback):
+        response = {"message": "Não foi possível gravar no Banco de Dados!"}
+        return response
+
+    return req_cashback
 
 
 def createResponse(status, message, name_of_content=False, content=False):

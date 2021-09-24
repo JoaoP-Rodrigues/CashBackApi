@@ -25,12 +25,26 @@ def createDB():
 
     cur.execute(sql_create_cashreqs)
 
+
 def lecture():
     c = con.cursor()
     c.execute("SELECT * FROM sells")
     for linha in c.fetchall():
         print(linha)
 
+
+def insertCashBack(dict_cash_datas):
+    con_cash = sqlite3.connect("cashback.db")
+    conect = con_cash.cursor()
+
+    createdAt = dict_cash_datas["createdAt"]
+    message = dict_cash_datas["message"]
+    document = dict_cash_datas["document"]
+    cashback = dict_cash_datas["cashback"]
+    try:
+        conect.execute("INSERT INTO cashregs (createdAt, message, document, cashback) VALUES (?, ?, ?, ?)", (createdAt, message, document, cashback))
+    except:
+        return False
 
 createDB()
 

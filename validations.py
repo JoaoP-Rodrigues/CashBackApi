@@ -1,8 +1,8 @@
 from datetime import datetime
 
+
 # this function will validade the consumer CPF
 def cpfValidate(cpfNotValidate):
-
     # take only numbers from cpf input
     try:
         cpf = [int(char) for char in cpfNotValidate if char.isdigit()]
@@ -20,7 +20,7 @@ def cpfValidate(cpfNotValidate):
 
     # check and validate the verifying digit
     for i in range(9, 11):
-        value = sum((cpf[num] * ((i+1) - num) for num in range(0, i)))
+        value = sum((cpf[num] * ((i + 1) - num) for num in range(0, i)))
         digit = ((value * 10) % 11) % 10
         if digit != cpf[i]:
             return False
@@ -72,8 +72,8 @@ def checkDate(date_purchase):
 
         # this part will check if a future date is informed
         date_interval = (today - date_pr).days
-        if date_interval < 0:
-            return False
+        if date_interval > 0:
+            return True
         else:
             return True
     except:
