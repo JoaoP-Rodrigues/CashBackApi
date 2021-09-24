@@ -37,6 +37,7 @@ def checkProds(product):
     else:
         return list_products[product]
 
+
 # this function will validate the total value from sell
 def checkValues(totalSell, prods_values):
     # take and convert the value from sell provided on input "json" to float format
@@ -60,18 +61,24 @@ def checkValues(totalSell, prods_values):
         return True
 
 
+# this function will verify the input date.
 def checkDate(date_purchase):
-    today = datetime.today()
-    today_cut = today.strftime("%Y-%m-%d %H:%M:%S")
-    date_pr = datetime.strptime(date_purchase, "%Y-%m-%d %H:%M:%S")
-    
-    today2 = today.strftime("%Y-%m-%d %H:%M:%S")
-    dt_t = datetime.strptime(today2, "%Y-%m-%d %H:%M:%S")
-    dt_p = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
-    teste =  abs(dt_t - dt_p)
-    print(teste)
-    
-    return today
+    # use the Try / Except to check if the date is valid
+    # The function datetime check all possibilities of invalid dates
+    # if a date invalid is informed, the function gives an error, and jump to except, returning False
+    try:
+        today = datetime.today()
+        date_pr = datetime.strptime(date_purchase, "%Y-%m-%d %H:%M:%S")
+
+        # this part will check if a future date is informed
+        date_interval = (today - date_pr).days
+        if date_interval < 0:
+            return False
+        else:
+            return True
+    except:
+        return False
+
 
 # simple function to get the sum values of all products in purchase
 def getSums(prod_value):
@@ -83,8 +90,10 @@ def getSums(prod_value):
 
     return sumProds
 
+
 # this function will calculate the total of cashback
-# in input, it's get two dictionarys; first one have the percent of cashback from each product, and second one have the total'sum from values of each product. 
+# in input, it's get two dictionarys; first one have the percent of cashback from each product
+# the second one have the total'sum from values of each product.
 def calculateCashbacks(dict_cashs, dict_sums):
     total_cash = 0
 

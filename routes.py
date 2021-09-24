@@ -24,13 +24,22 @@ def getCashBack():
         response = {"message": "O valor da compra não corresponde a soma dos valores dos produtos!"}
         return response
 
-    #hoje = {"Hoje": checkDate(body["sold_at"])}
+    if not checkDate(body["sold_at"]):
+        response = {"message": "A data informada é inválida!"}
+        return response
+
     list_total_prods = getSums(body["products"])
 
     total_cashback = calculateCashbacks(dict_percent_prods, list_total_prods)
-    dict_test = {"TOTAL DE CASHBACK": total_cashback}
+    return_cashback = {
+        "createdAt": "2021-07-26T22:50:55.740Z",
+        "message": "Cashback criado com sucesso!",
+        "id": "NaN",
+        "document": "33535353535",
+        "cashback": "10"
+    }
 
-    return dict_test
+    return return_cashback
 
 
 def createResponse(status, message, name_of_content=False, content=False):
