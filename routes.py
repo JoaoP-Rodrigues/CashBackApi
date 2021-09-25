@@ -1,5 +1,5 @@
 # imports
-from flask import Flask, request
+from flask import Flask, request, redirect, url_for
 from datetime import datetime
 from db import *
 from validations import *
@@ -51,7 +51,9 @@ def getCashBack():
     
     # get datetime from time of call by API
     today = datetime.today()
-    
+    today = str(today).split('.')
+    today = today[0]
+
     # create a dictionary to store datas of execution.
     # same are take from functions, others are take from input
     # this dictionary will send to other function to insert in database
@@ -61,22 +63,24 @@ def getCashBack():
         "document": body["customer"]["document"],
         "cashback": total_cashback
     }
-    
+
     # try insert the above datas in database using a function.
-    if not insertCashBack(req_cashback):
+    get_return_db = insertCashBack(req_cashback)
+    if not get_return_db:
         response = {"message": "Não foi possível gravar no Banco de Dados!"}
         return response
 
-    return req_cashback
+    id_reg_cash = lectureDb(today, customer_cpf)
+    req_cashback["id"] = id_reg_cash
+
+    #return req_cashback
+    return redirect(url_for('redirExtApi'))
 
 
-def createResponse(status, message, name_of_content=False, content=False):
-    response = {}
-    response["status"] = status
-    response["message"] = message
 
-    if(name_of_content and content):
-        response[name_of_content] = content
-    return response
+@app.route("/api/redir")
+def redirExtApi():
+    return "Joao"
+
 
 app.run()
