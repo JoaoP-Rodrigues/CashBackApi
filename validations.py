@@ -1,5 +1,22 @@
 from datetime import datetime
 
+# function to validate apiKey
+# this is only used in development environment
+# in work environment, must be replaced by a requisitions in a database
+def validateKey(api_key):
+    keyRegistereds = ['lgKJBFD4auz17xlYR2OkLZWiTGgKj2s6',
+                      'duxPiriScXcbfesb3mn4dY7qHI7DPFfy',
+                      'JaHY6HCItcI454ez4uBXnfzp1smGPPUt',
+                      'Nb8QSh6EEUFrfzZKsPBf484KOH8rbOAU',
+                      'nHoColNgF2nbGYQk60tKGoAjOjdy4GIG',
+                      'QazBTG8Wcql44h7tIVpcFPyPcDqMtQXU',
+                      'itXKOpLeygpbc4vkx68ZaYyd7ZgvMNT7',
+                      '81oxoxmebUy4Z5x5wm6ve8vIjXSWqD7C']
+
+    if api_key in keyRegistereds:
+        return True
+    else:
+        return False
 
 # this function will validade the consumer CPF
 def cpfValidate(cpfNotValidate):

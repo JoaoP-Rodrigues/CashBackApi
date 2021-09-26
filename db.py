@@ -1,34 +1,27 @@
 import sqlite3
 
+
+# this line code bellow must be used to restart database
 # os.remove("cashback.db") if os.path.exists("cashback.db") else None
 
+# this function will create a new database if one is not found
 def createDB():
     con = sqlite3.connect("cashback.db")
     cur = con.cursor()
-    sql_create_sells = '''CREATE TABLE IF NOT EXISTS sells(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-                       sell_date date(20),
-                       user_cpf varchar(20),
-                       user_name varchar(100),
-                       prod_type varchar(20),
-                       prod_value float(12),
-                       prod_qty float(12),
-                       prod_cash integer(100))'''
-
-    cur.execute(sql_create_sells)
-
-    sql_create_cashreqs = '''CREATE TABLE IF NOT EXISTS cashregs(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-                           createdAt TEXT,
-                           message TEXT,
-                           document varchar(11),
-                           cashback double(100))'''
+    sql_create_cashreqs = ('CREATE TABLE IF NOT EXISTS cashregs(\n'
+                           '                           id varchar, \n'
+                           '                           createdAt TEXT,\n'
+                           '                           message TEXT,\n'
+                           '                           document varchar(11),\n'
+                           '                           cashback double(100))')
 
     cur.execute(sql_create_cashreqs)
     cur.close()
     con.close()
 
 
+'''
 def lectureDb(data_reg, customer_cpf):
-
     try:
         con_l = sqlite3.connect("cashback.db")
         cur_q = con_l.cursor()
@@ -43,29 +36,34 @@ def lectureDb(data_reg, customer_cpf):
         return id_reg
     except:
         return False
+'''
 
 
+# this function will save all data in the database
 def insertCashBack(dict_cash_datas):
+    # make a connection with the database created above
     con_cash = sqlite3.connect("cashback.db")
     conect_cash = con_cash.cursor()
 
+    # get all elements  from input dictionary and save each one in a variable
+    id_insert = dict_cash_datas["id"]
     createdAt = dict_cash_datas["createdAt"]
     message = dict_cash_datas["message"]
     document = dict_cash_datas["document"]
     cashback = dict_cash_datas["cashback"]
 
+    # try insert data in database
+    # if this fail, will return False to main page
     try:
-        conect_cash.execute("INSERT INTO cashregs (createdAt, message, document, cashback) VALUES (?, ?, ?, ?)",
-                            (createdAt, message, document, cashback))
+        conect_cash.execute("INSERT INTO cashregs (id, createdAt, message, document, cashback) VALUES (?, ?, ?, ?, ?)",
+                            (id_insert, createdAt, message, document, cashback))
         con_cash.commit()
-
         conect_cash.close()
         con_cash.close()
 
         return True
-
     except:
-
         return False
+
 
 createDB()
