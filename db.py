@@ -20,25 +20,6 @@ def createDB():
     con.close()
 
 
-'''
-def lectureDb(data_reg, customer_cpf):
-    try:
-        con_l = sqlite3.connect("cashback.db")
-        cur_q = con_l.cursor()
-        sql_select_id = "SELECT id FROM cashregs WHERE document == '{}' AND createdAt == '{}'".format(customer_cpf, data_reg)
-
-        cur_q.execute(sql_select_id)
-        id_reg = cur_q.fetchone()
-        id_reg = id_reg[0]
-        cur_q.close()
-        con_l.close()
-
-        return id_reg
-    except:
-        return False
-'''
-
-
 # this function will save all data in the database
 def insertCashBack(dict_cash_datas):
     # make a connection with the database created above

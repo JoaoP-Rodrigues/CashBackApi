@@ -9,14 +9,14 @@ import json
 # create API with Flask
 app = Flask("CashBack")
 
+
 # main function.
 # here is the all call functions and returns to frontend
 @app.route("/api/cashback", methods=["POST"])
 def getCashBack():
-    
     # get all input informations from frontend by request function and add in body variable(dictionary).
     body = request.get_json()
-    
+
     # get CPF from customer and API Key from seller
     customer_cpf = body["customer"]["document"]
     api_key_user = body["apikey"]
@@ -30,7 +30,7 @@ def getCashBack():
     if not cpfValidate(customer_cpf):
         response = {"message": "CPF Inválido!"}
         return response
-    
+
     # get all cashbacks values of all products
     # so, add this values and the respective product in a dictionary for control.
     dict_percent_prods = {}
@@ -38,25 +38,25 @@ def getCashBack():
         percent = checkProds(p["type"])
         t = p["type"]
         dict_percent_prods[t] = percent
-    
+
     # call function do check if values of each product in order are equal than total order
     if not checkValues(body["total"], body["products"]):
         response = {"message": "O valor da compra não corresponde a soma dos valores dos produtos!"}
         return response
-    
+
     # call function to check input date.
     # two validates are made here, if the date is in the future, and if is format valid
     if not checkDate(body["sold_at"]):
         response = {"message": "A data informada é inválida!"}
         return response
-    
+
     # call function to get the value from products
     # this will calculate the value * quantity
     list_total_prods = getSums(body["products"])
-    
+
     # call function to calculate the total value from cashback
     total_cashback = calculateCashbacks(dict_percent_prods, list_total_prods)
-    
+
     # this bellow part will use the extern api from "Mais Todos"
     # it will send to a url one json with two elements; CPF from customer and the total cashback calculated above
     base_url = 'https://5efb30ac80d8170016f7613d.mockapi.io/api/mock/Cashback'
@@ -84,9 +84,6 @@ def getCashBack():
     if not get_return_db:
         response = {"message": "Não foi possível gravar no Banco de Dados!"}
         return response
-
-    #id_reg_cash = lectureDb(today, customer_cpf)
-    #req_cashback["id"] = data_register['id']
 
     return req_cashback
 
