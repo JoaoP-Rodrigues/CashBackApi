@@ -1,8 +1,8 @@
 import sqlite3
 
-
 # this line code bellow must be used to restart database
 # os.remove("cashback.db") if os.path.exists("cashback.db") else None
+
 
 # this function will create a new database if one is not found
 def createDB():
@@ -45,6 +45,5 @@ def insertCashBack(dict_cash_datas):
         return True
     except:
         return False
-
 
 createDB()

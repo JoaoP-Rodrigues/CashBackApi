@@ -1,10 +1,8 @@
 # imports
-from flask import Flask, request, redirect, url_for
-from datetime import datetime
+from flask import Flask, request
 from db import *
 from validations import *
 import requests
-import json
 
 # create API with Flask
 app = Flask("CashBack")
