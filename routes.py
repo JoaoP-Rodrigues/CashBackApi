@@ -15,9 +15,16 @@ def getCashBack():
     # get all input informations from frontend by request function and add in body variable(dictionary).
     body = request.get_json()
 
-    # get CPF from customer and API Key from seller
-    customer_cpf = body["customer"]["document"]
-    api_key_user = body["apikey"]
+    # get All Data from customer and API Key from seller
+    try:
+        customer_cpf = body["customer"]["document"]
+        api_key_user = body["apikey"]
+        datePurchase = body["sold_at"]
+        totalPurchase = body["total"]
+        allProducts = body["products"]
+    except:
+        response = {"message": "Existe um erro no formato do arquivo. Certifique de que ele esteja correto!"}
+        return response
 
     # call the function to validate API Key
     if not validateKey(api_key_user):
@@ -32,25 +39,25 @@ def getCashBack():
     # get all cashbacks values of all products
     # so, add this values and the respective product in a dictionary for control.
     dict_percent_prods = {}
-    for p in body["products"]:
+    for p in allProducts:
         percent = checkProds(p["type"])
         t = p["type"]
         dict_percent_prods[t] = percent
 
     # call function do check if values of each product in order are equal than total order
-    if not checkValues(body["total"], body["products"]):
+    if not checkValues(totalPurchase, allProducts):
         response = {"message": "O valor da compra não corresponde a soma dos valores dos produtos!"}
         return response
 
     # call function to check input date.
     # two validates are made here, if the date is in the future, and if is format valid
-    if not checkDate(body["sold_at"]):
+    if not checkDate(datePurchase):
         response = {"message": "A data informada é inválida!"}
         return response
 
     # call function to get the value from products
     # this will calculate the value * quantity
-    list_total_prods = getSums(body["products"])
+    list_total_prods = getSums(allProducts)
 
     # call function to calculate the total value from cashback
     total_cashback = calculateCashbacks(dict_percent_prods, list_total_prods)
