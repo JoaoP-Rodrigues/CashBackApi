@@ -62,7 +62,7 @@ def getCashBack():
     # call function to calculate the total value from cashback
     total_cashback = calculateCashbacks(dict_percent_prods, list_total_prods)
 
-    # this bellow part will use the extern api from "Mais Todos"
+    # this bellow part will use the extern api from Owner of this code
     # it will send to a url one json with two elements; CPF from customer and the total cashback calculated above
     base_url = 'https://5efb30ac80d8170016f7613d.mockapi.io/api/mock/Cashback'
     parameters = {'document': customer_cpf, 'cashback': total_cashback}
