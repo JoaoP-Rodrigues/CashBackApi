@@ -1,6 +1,6 @@
-# maistodosApi
-Code created for a test to a opportunity in the new job.
-This API was created to calculate the value of cashback from retailers that uses the "Mais Todos" services.
+# CashBack_Api
+Code created for an API example that returns Cash Back.
+This API was created to calculate the value of cashback from retailers that uses the services of Owner of this API.
 
 _________________________________
 REQUIREMENTS:
@@ -10,6 +10,7 @@ REQUIREMENTS:
         This is the micro framework to create and use APIs in Python.
     - SQLite3
         This is the database to store datas.
+        Note*: other databases can be used, of your choice, but here I use SQLite only as an example.
         
     - All internal and external functions from python are imported in the start of code.
     ------------------------------------------------------------------------------------------------------
@@ -20,7 +21,7 @@ REQUIREMENTS:
         "sold_at": "2021-09-23 00:00:00",
         "customer": {
            "document": "00000000000",
-           "name": "Catarina Da SIlva"
+           "name": "Catarina Da Silva"
         },
         "total": "100.00",
         "products": [
@@ -53,7 +54,7 @@ routes.py
      
     In start, it will check and validate the informed data (CPF, Dates and APIKey).
     So, it will call functions to validate product's values, and save their sum.
-    Next, will send to extern API from "Mais Todos" the necessary data to request a creation date and save cashback value
+    Next, will send to extern API from Owner the necessary data to request a creation date and save cashback value
     In the last, it will insert all necessary data in a local database (SQLite) and return this same data from FrontEnd
     
     -------------------------------------------------------------------------------------------------------
